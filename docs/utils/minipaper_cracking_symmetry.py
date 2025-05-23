@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 def install_packages():
-    required = ["numpy", "scipy", "matplotlib", "tabulate", "ipympl", "plotly", "nbformat"]
+    required = ["numpy", "scipy", "matplotlib", "tabulate", "ipympl", "plotly", "nbformat", "pandas"]
 
     print(f"📦 Installing packages: {' '.join(required)}")
     subprocess.run(
@@ -12,6 +12,7 @@ def install_packages():
     )
     print("✅ All packages installed.")
 
+install_packages() # do it now for convenience
 
 # Group into contiguous non-NaN ranges (i.e., success ranges!)
 def group_success_ranges(theta1_vals, theta2_vals):
@@ -154,15 +155,18 @@ def generate_loss_surfaces(
 
 
 import plotly.graph_objects as go
+import numpy as np
 
-def plot_loss_surfaces(surface_data, param_keys, result):
+def plot_loss_surfaces(surface_data, param_keys, result, highlight_delta=0.02):
     """
-    Plot 3D loss surfaces with the optimized point highlighted.
+    Plot 3D loss surfaces with the optimized point highlighted and
+    red-colored grid tiles where all Z values are within `highlight_delta` of the optimum.
 
     Parameters:
     - surface_data: list of (X, Y, Z, x_key, y_key) tuples
     - param_keys: list of parameter names in order
     - result: optimization result object (must have .x and .fun)
+    - highlight_delta: float, maximum deviation from optimum to highlight
     """
     for X, Y, Z, x_key, y_key in surface_data:
         x_idx = param_keys.index(x_key)
@@ -174,6 +178,7 @@ def plot_loss_surfaces(surface_data, param_keys, result):
 
         fig = go.Figure()
 
+        # Main surface
         fig.add_trace(go.Surface(
             x=X, y=Y, z=Z,
             colorscale="Viridis",
@@ -187,6 +192,33 @@ def plot_loss_surfaces(surface_data, param_keys, result):
             name="Loss Surface"
         ))
 
+        # Highlight tiles
+        i_max, j_max = Z.shape[0] - 1, Z.shape[1] - 1
+        for i in range(i_max):
+            for j in range(j_max):
+                quad_z = [Z[i, j], Z[i+1, j], Z[i, j+1], Z[i+1, j+1]]
+                if all(np.abs(z - z_opt) <= highlight_delta for z in quad_z):
+                    
+                    if any(z < z_opt for z in quad_z):
+                        color = 'red'
+                    else:
+                        color = 'yellow'
+
+                    quad_x = [X[i, j], X[i+1, j], X[i+1, j+1], X[i, j+1], X[i, j]]
+                    quad_y = [Y[i, j], Y[i+1, j], Y[i+1, j+1], Y[i, j+1], Y[i, j]]
+                    quad_z = [Z[i, j], Z[i+1, j], Z[i+1, j+1], Z[i, j+1], Z[i, j]]
+
+                    fig.add_trace(go.Scatter3d(
+                        x=quad_x,
+                        y=quad_y,
+                        z=quad_z,
+                        mode='lines',
+                        line=dict(color='red', width=4),
+                        name="Near-Optimal Region",
+                        showlegend=False
+                    ))
+
+        # Optimal point
         fig.add_trace(go.Scatter3d(
             x=[x_opt], y=[y_opt], z=[z_opt],
             mode='markers+text',
@@ -261,3 +293,58 @@ def animate_leg(theta1_vals, theta2_vals, l, a_x, a_y, b, c):
     ani = FuncAnimation(fig, update, frames=valid_frames, interval=100, blit=True)
     plt.close(fig)
     return HTML(ani.to_jshtml())
+
+def extract_ax_eq_ay_point_cloud(result, param_keys, bounds_dict, symmetry_error_fn, resolution=30, angle_deg=45):
+    """
+    Sample points along the a_x = a_y line (fixed angle), and vary |A|, b, c.
+    Returns: list of (a_mag, b, c, mse)
+    """
+    import numpy as np
+
+    a_angle = np.radians(angle_deg)
+    a_mags = np.linspace(0.1, 1.2, resolution)
+    b_vals = np.linspace(bounds_dict["b"][0], bounds_dict["b"][1], resolution)
+    c_vals = np.linspace(bounds_dict["c"][0], bounds_dict["c"][1], resolution)
+
+    cloud = []
+
+    for a_mag in a_mags:
+        a_x = a_mag * np.cos(a_angle)
+        a_y = a_mag * np.sin(a_angle)
+
+        for b in b_vals:
+            for c in c_vals:
+                params = result.x.copy()
+                param_map = dict(zip(param_keys, params))
+
+                param_map["a_x"] = a_x
+                param_map["a_y"] = a_y
+                param_map["b"]   = b
+                param_map["c"]   = c
+
+                vec = [param_map[k] for k in param_keys]
+                mse = symmetry_error_fn(vec, np.nan)
+
+                if np.isfinite(mse):
+                    cloud.append((a_mag, b, c, mse))
+
+    return np.array(cloud)
+
+
+import plotly.express as px
+
+def plot_universe_point_cloud(cloud, mse_limit=None):
+    a_mag, b, c, mse = cloud.T
+
+    if mse_limit:
+        mask = mse < mse_limit
+        a_mag, b, c, mse = a_mag[mask], b[mask], c[mask], mse[mask]
+
+    fig = px.scatter_3d(
+        x=a_mag, y=b, z=c,
+        color=mse,
+        labels={'x': '|A|', 'y': 'b', 'z': 'c', 'color': 'MSE'},
+        title="Symmetry Landscape: Fixed a_angle = 45°"
+    )
+    fig.update_traces(marker=dict(size=3, opacity=0.6))
+    fig.show()
