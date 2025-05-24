@@ -1,4 +1,4 @@
-# MAGG.e by Robotick™
+# MAGG.e™ by Robotick™
 
 **MAGG.e™** is an expressive, open-source robotics platform developed as part of the Robotick™ Engine project.
 She blends personality, engineering, and a sustainable design ethos — ideal for enthusiasts, educators, and curious makers.
@@ -22,5 +22,5 @@ This repository contains her hardware, firmware, and software components, along 
 This project is licensed under the [Apache License 2.0](LICENSE), which permits use, modification, and distribution with proper attribution.
 
 **Trademark Notice**  
-MAGG.e™ and her visual character design are trademarks of Paul Connor. While the code and hardware designs are open-source, use of the MAGG.e name or likeness in commercial products or branding requires prior written permission. See [`TRADEMARK.md`](TRADEMARK.md) for details.
+MAGG.e™ and her visual character design are trademarks of Paul Connor. While the code and hardware designs are open-source, use of the MAGG.e™ name or likeness in commercial products or branding requires prior written permission. See [`TRADEMARK.md`](TRADEMARK.md) for details.
 
