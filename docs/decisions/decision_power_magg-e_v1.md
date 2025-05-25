@@ -44,11 +44,15 @@ This document captures the rationale behind the selection and assignment of powe
 
 | Power Bank       | Output Port      | Output Voltage / Max | Avg Output Power | Peak Output Power | Target Device              | Input Voltage / Req. | Avg Input Power | Peak Input Power | Headroom (Avg) | Headroom (Peak) |
 |------------------|------------------|-----------------------|------------------|-------------------|----------------------------|-----------------------|------------------|------------------|----------------|-----------------|
-| NB7102 (~440g)   | DC1              | 24V @ 3A (72W max)    | 17.5 W           | 23.5 W            | Pi5 + Camera + WiFi (via converter) | 5V (via buck)         | 17.5 W           | 23.5 W           | 54.5 W (311%)   | 48.5 W (206%)    |
+| NB7102 (~440g)   | DC2              | 19.5V @ 3A (58.5W max)    | 17.5 W           | 23.5 W            | Pi5 + Camera + WiFi (via converter) | 5V (via buck)         | 17.5 W           | 23.5 W           | 54.5 W (311%)   | 48.5 W (206%)    |
 | NB7102 (~440g)   | USB-A            | 5V @ 2.4A (12W max)   | 1.5 W            | 5.0 W             | 2× Servo Gimbal            | 5V                    | 1.5 W            | 5.0 W            | 10.5 W (700%)  | 7.0 W (140%)    |
 | YB120300 (~200g) | DC barrel        | 12V @ 3A (36W max)    | 5.5 W            | 18.0 W            | Pi2 + BrickPi              | 12V                   | 5.5 W            | 18.0 W           | 30.5 W (554%)  | 18.0 W (100%)   |
 
 *Headroom = Output capacity minus Input requirement*
+
+
+**Design Note:** DC2 (19.5V) is used instead of DC1 to keep the latter available for charging the power bank while the system remains powered.
+
 
 ### Servo Control Channel Plan
 
@@ -65,7 +69,7 @@ This document captures the rationale behind the selection and assignment of powe
 
 | Risk                                       | Mitigation |
 |--------------------------------------------|------------|
-| Pi5 power delivery constraints              | Replaced USB-C PD with 24V DC1 + high-current 5V buck converter with USB-C output |
+| Pi5 power delivery constraints              | Replaced USB-C PD with 19.5V DC2 + high-current 5V buck converter (leaves DC1 free for charging) with USB-C output |
 | Servo stalls causing USB-A dropouts        | Limit gimbal speed; add local capacitor smoothing to absorb stall transients |
 | BrickPi peak draw on YB120300              | Avoid simultaneous stall conditions; monitor thermal and current headroom on BrickPi3 |
 | Shared ground instability                  | Tie all GND rails at a common point; test for potential ground loops in hardware-in-the-loop |
