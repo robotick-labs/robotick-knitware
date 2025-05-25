@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 def install_packages():
-    required = ["numpy", "scipy", "matplotlib", "tabulate", "ipympl", "plotly", "nbformat", "pandas"]
+    required = ["numpy", "scipy", "matplotlib", "tabulate", "ipympl", "plotly", "nbformat", "pandas", "numba"]
 
     print(f"📦 Installing packages: {' '.join(required)}")
     subprocess.run(
