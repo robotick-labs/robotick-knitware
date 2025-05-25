@@ -294,39 +294,42 @@ def animate_leg(theta1_vals, theta2_vals, l, a_x, a_y, b, c):
     plt.close(fig)
     return HTML(ani.to_jshtml())
 
-def extract_ax_eq_ay_point_cloud(result, param_keys, bounds_dict, symmetry_error_fn, resolution=30, angle_deg=45):
+
+def extract_ax_eq_ay_point_cloud(result, param_keys, bounds_dict, symmetry_error_fn, resolution=30, angle_range=range(20, 71, 10)):
     """
-    Sample points along the a_x = a_y line (fixed angle), and vary |A|, b, c.
-    Returns: list of (a_mag, b, c, mse)
+    Sample points along the a_x = a_y line for multiple angles (20° to 70°), and vary |A|, b, c.
+    Returns: array of shape (N, 5): [a_mag, b, c, mse, angle_deg]
     """
     import numpy as np
 
-    a_angle = np.radians(angle_deg)
     a_mags = np.linspace(0.1, 1.2, resolution)
     b_vals = np.linspace(bounds_dict["b"][0], bounds_dict["b"][1], resolution)
     c_vals = np.linspace(bounds_dict["c"][0], bounds_dict["c"][1], resolution)
 
     cloud = []
 
-    for a_mag in a_mags:
-        a_x = a_mag * np.cos(a_angle)
-        a_y = a_mag * np.sin(a_angle)
+    for angle_deg in angle_range:
+        a_angle = np.radians(angle_deg)
 
-        for b in b_vals:
-            for c in c_vals:
-                params = result.x.copy()
-                param_map = dict(zip(param_keys, params))
+        for a_mag in a_mags:
+            a_x = a_mag * np.cos(a_angle)
+            a_y = a_mag * np.sin(a_angle)
 
-                param_map["a_x"] = a_x
-                param_map["a_y"] = a_y
-                param_map["b"]   = b
-                param_map["c"]   = c
+            for b in b_vals:
+                for c in c_vals:
+                    params = result.x.copy()
+                    param_map = dict(zip(param_keys, params))
 
-                vec = [param_map[k] for k in param_keys]
-                mse = symmetry_error_fn(vec, np.nan)
+                    param_map["a_x"] = a_x
+                    param_map["a_y"] = a_y
+                    param_map["b"]   = b
+                    param_map["c"]   = c
 
-                if np.isfinite(mse):
-                    cloud.append((a_mag, b, c, mse))
+                    vec = [param_map[k] for k in param_keys]
+                    mse = symmetry_error_fn(vec, np.nan)
+
+                    if np.isfinite(mse):
+                        cloud.append((a_mag, b, c, mse))
 
     return np.array(cloud)
 
