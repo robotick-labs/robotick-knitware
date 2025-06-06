@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 def install_packages():
-    required = ["numpy", "scipy", "matplotlib", "tabulate", "ipympl", "plotly", "nbformat", "pandas", "numba"]
+    required = ["numpy", "scipy", "matplotlib", "tabulate", "ipympl", "plotly", "nbformat", "pandas", "numba", "scikit-learn"]
 
     print(f"📦 Installing packages: {' '.join(required)}")
     subprocess.run(
@@ -351,3 +351,50 @@ def plot_universe_point_cloud(cloud, mse_limit=None):
     )
     fig.update_traces(marker=dict(size=3, opacity=0.6))
     fig.show()
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+def plot_best_fit_lines_from_cloud(cloud, mse_limit=0.01):
+    """
+    Extracts lowest-MSE samples from the given cloud and fits:
+    - c = k1 * |A| + b1
+    - b = k2 * |A| + b2
+
+    Then plots both best-fit lines and prints the equations.
+    """
+    a_mag, b, c, mse = cloud[:, 0], cloud[:, 1], cloud[:, 2], cloud[:, 3]
+
+    # Filter low-MSE points
+    mask = mse < mse_limit
+    a_mag, b, c = a_mag[mask], b[mask], c[mask]
+
+    # Fit models
+    A = a_mag.reshape(-1, 1)
+    c_model = LinearRegression().fit(A, c)
+    b_model = LinearRegression().fit(A, b)
+
+    print(f"Best fit: c ≈ {c_model.coef_[0]:.4f}·|A| + {c_model.intercept_:.4f}")
+    print(f"Best fit: b ≈ {b_model.coef_[0]:.4f}·|A| + {b_model.intercept_:.4f}")
+
+    # Plot
+    plt.figure(figsize=(10, 4))
+
+    plt.subplot(1, 2, 1)
+    plt.scatter(a_mag, c, s=5, alpha=0.3, label='samples')
+    plt.plot(a_mag, c_model.predict(A), 'r-', label='best fit')
+    plt.xlabel('|A|'); plt.ylabel('c')
+    plt.title('Best Fit: c vs |A|')
+    plt.grid(True); plt.legend()
+
+    plt.subplot(1, 2, 2)
+    plt.scatter(a_mag, b, s=5, alpha=0.3, label='samples')
+    plt.plot(a_mag, b_model.predict(A), 'g-', label='best fit')
+    plt.xlabel('|A|'); plt.ylabel('b')
+    plt.title('Best Fit: b vs |A|')
+    plt.grid(True); plt.legend()
+
+    plt.tight_layout()
+    plt.show()
