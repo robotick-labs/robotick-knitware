@@ -1,0 +1,128 @@
+{
+  "version": 9,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21
+  },
+  "configurePresets": [
+    {
+      "name": "ubuntu-x64-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/usr/bin/gcc",
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+        "ROBOTICK_PLATFORM_UBUNTU": "ON",
+        "ROBOTICK_ENABLE_PYTHON": "ON",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/../../../robotick-engine/cmake/toolchain-ubuntu-x64.cmake"
+      }
+    },
+    {
+      "name": "esp32s3-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/../../../robotick-engine/cmake/toolchain-esp32s3.cmake",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ROBOTICK_PLATFORM_ESP32": "ON",
+        "ROBOTICK_BUILD_TESTS": "OFF"
+      },
+      "environment": {
+        "IDF_PATH": "C:/Espressif/frameworks/esp-idf-v5.4.1",
+        "IDF_TOOLS_PATH": "C:/Espressif"
+      }
+    },
+
+    {
+      "name": "barr-e-ubuntu-x64-debug",
+      "inherits": "ubuntu-x64-base",
+      "cacheVariables": {
+        "ROBOTICK_BOT": "barr-e",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O0 -fno-omit-frame-pointer -fdebug-prefix-map=${sourceDir}=/workspace -DROBOTICK_DEBUG",
+        "ROBOTICK_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "barr-e-ubuntu-x64-development",
+      "inherits": "ubuntu-x64-base",
+      "cacheVariables": {
+        "ROBOTICK_BOT": "barr-e",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O1 -fno-omit-frame-pointer -fdebug-prefix-map=${sourceDir}=/workspace -DROBOTICK_DEV",
+        "ROBOTICK_BUILD_CONFIG_DEVELOPMENT": "ON"
+      }
+    },
+    {
+      "name": "barr-e-ubuntu-x64-release",
+      "inherits": "ubuntu-x64-base",
+      "cacheVariables": {
+        "ROBOTICK_BOT": "barr-e",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS_DEBUG": "-DNDEBUG -DROBOTICK_RELEASE",
+        "ROBOTICK_BUILD_CONFIG_RELEASE": "ON",
+        "ROBOTICK_STRIP_PROBES": "ON"
+      }
+    },
+    {
+      "name": "barr-e-esp32s3-debug",
+      "inherits": "esp32s3-base",
+      "cacheVariables": {
+        "ROBOTICK_BOT": "barr-e"
+      }
+    },
+
+    {
+      "name": "magg-e-ubuntu-x64-debug",
+      "inherits": "ubuntu-x64-base",
+      "cacheVariables": {
+        "ROBOTICK_BOT": "magg-e",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O0 -fno-omit-frame-pointer -fdebug-prefix-map=${sourceDir}=/workspace -DROBOTICK_DEBUG",
+        "ROBOTICK_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "magg-e-ubuntu-x64-development",
+      "inherits": "ubuntu-x64-base",
+      "cacheVariables": {
+        "ROBOTICK_BOT": "magg-e",
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O1 -fno-omit-frame-pointer -fdebug-prefix-map=${sourceDir}=/workspace -DROBOTICK_DEV",
+        "ROBOTICK_BUILD_CONFIG_DEVELOPMENT": "ON"
+      }
+    },
+    {
+      "name": "magg-e-ubuntu-x64-release",
+      "inherits": "ubuntu-x64-base",
+      "cacheVariables": {
+        "ROBOTICK_BOT": "magg-e",
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS_DEBUG": "-DNDEBUG -DROBOTICK_RELEASE",
+        "ROBOTICK_BUILD_CONFIG_RELEASE": "ON",
+        "ROBOTICK_STRIP_PROBES": "ON"
+      }
+    },
+    {
+      "name": "magg-e-esp32s3-debug",
+      "inherits": "esp32s3-base",
+      "cacheVariables": {
+        "ROBOTICK_BOT": "magg-e"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "barr-e-ubuntu-x64-debug", "configurePreset": "barr-e-ubuntu-x64-debug" },
+    { "name": "barr-e-ubuntu-x64-development", "configurePreset": "barr-e-ubuntu-x64-development" },
+    { "name": "barr-e-ubuntu-x64-release", "configurePreset": "barr-e-ubuntu-x64-release" },
+    { "name": "barr-e-esp32s3-debug", "configurePreset": "barr-e-esp32s3-debug" },
+    { "name": "magg-e-ubuntu-x64-debug", "configurePreset": "magg-e-ubuntu-x64-debug" },
+    { "name": "magg-e-ubuntu-x64-development", "configurePreset": "magg-e-ubuntu-x64-development" },
+    { "name": "magg-e-ubuntu-x64-release", "configurePreset": "magg-e-ubuntu-x64-release" },
+    { "name": "magg-e-esp32s3-debug", "configurePreset": "magg-e-esp32s3-debug" }
+  ]
+}
