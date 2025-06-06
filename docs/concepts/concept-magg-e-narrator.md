@@ -1,9 +1,9 @@
 
-# 🐔 Magg-E's Narrative Brain: A Layered Architecture for Emotionally Expressive Robotics
+# 🐔MAGG.e™'s Narrative Brain: A Layered Architecture for Emotionally Expressive Robotics
 
 ## Abstract
 
-This paper proposes a novel narrative cognition module for embodied robotics, designed for Magg-E — a two-wheeled, LEGO-based balancing robot with depth sensing and character. The system introduces a layered control model that supplements traditional robotics behavior with expressive, narrative-aware decision-making. A slow-running "narrator brain" interprets the robot's actions, environment, and emotional state to produce poetic inner monologues, dynamic behavior scripting, and emotionally resonant stor...
+This paper proposes a novel narrative cognition module for embodied robotics, designed forMAGG.e™ — a two-wheeled, LEGO-based balancing robot with depth sensing and character. The system introduces a layered control model that supplements traditional robotics behavior with expressive, narrative-aware decision-making. A slow-running "narrator brain" interprets the robot's actions, environment, and emotional state to produce poetic inner monologues, dynamic behavior scripting, and emotionally resonant stor...
 
 We argue that this approach is not just expressive but potentially aligned with cognitive models of human decision-making. Emotional and narrative context may serve as functional scaffolds for planning and agency, with implications for explainability, HRI, and adaptive autonomy.
 
@@ -15,7 +15,7 @@ As robotics enters human-facing domains — education, domestic assistance, expr
 
 This work introduces a **narrative control layer**, allowing a robot to build an evolving, emotionally grounded story of its experiences. The robot gains not just function, but character — enabling new forms of transparency, education, companionship, and engagement.
 
-We explore this through the development of **Magg-E**, a balancing chicken-themed robot powered by ROS2 and the modular Robotick Engine. Her “soul” is an LLM-assisted narrative planner, generating real-time or reflective descriptions, and informing behavior scripting with affective depth.
+We explore this through the development of *MAGG.e™**, a balancing chicken-themed robot powered by ROS2 and the modular Robotick Engine. Her “soul” is an LLM-assisted narrative planner, generating real-time or reflective descriptions, and informing behavior scripting with affective depth.
 
 ---
 
@@ -67,7 +67,7 @@ This proposal applies these insights to robotics: we hypothesize that giving rob
 
 ### 4.1 Layered System Overview
 
-```
+```plaintext
 1. Motor Layer        → Balancing, motion (100–500Hz)
 2. Behavior Layer     → Reactive actions (5–50Hz)
 3. Script Runner      → Prewritten / dynamic action sequences (0.5–2Hz)
@@ -79,7 +79,7 @@ Each layer operates independently but exchanges data via ROS2. The **Narrative P
 
 ### 4.2 ROS2 Integration
 
-```
+```plaintext
 Node: magg_e_narrator
 ├── Subscribes:
 │   ├── /detections           (vision_msgs)
@@ -106,7 +106,7 @@ Node: magg_e_narrator
 
 | File / Module | Purpose |
 |---------------|---------|
-| `magg-e-soul.yaml` | Maps emotions to behavior sets and triggers |
+| MAGG.e™-soul.yaml` | Maps emotions to behavior sets and triggers |
 | `log_to_story.py` | Converts rosbag to story-form narrative |
 | `voice-over.sh` | Synthesizes narration with TTS |
 | `scripts/*.yaml` | Reusable narrative-action plans |
@@ -125,15 +125,15 @@ Node: magg_e_narrator
 
 ## 8. Conclusion
 
-This paper introduces a control architecture that merges robotics with narrative cognition. Framed around the development of Magg-E, the system demonstrates that story and emotion are not merely decorative — they may be *functional components* of intelligent behavior.
+This paper introduces a control architecture that merges robotics with narrative cognition. Framed around the development ofMAGG.e™, the system demonstrates that story and emotion are not merely decorative — they may be *functional components* of intelligent behavior.
 
 We believe this model, while showcased playfully, may inform future emotionally aware, explainable, and socially legible robots — from education to healthcare, domestic AI to exploration.
 
-> *“There was a knock at the cabinet. I did not answer. I evolved.” – Magg-E*
+> *“There was a knock at the cabinet. I did not answer. I evolved.” –MAGG.e™*
 
 ---
 
 ## Acknowledging Robotick
 
-While this work is focused on Magg-E, the architecture is implemented within the Robotick Engine — an open, modular robotics framework also under active development. Future work may explore Robotick as a standalone contribution or platform for broader research.
+While this work is focused onMAGG.e™, the architecture is implemented within the Robotick Engine — an open, modular robotics framework also under active development. Future work may explore Robotick as a standalone contribution or platform for broader research.
 

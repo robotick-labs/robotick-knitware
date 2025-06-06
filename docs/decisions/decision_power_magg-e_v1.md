@@ -1,7 +1,8 @@
-# Power Architecture Selection – Magg.e v1
+# Power Architecture Selection – MAGG.e™ v1
 
 ## 1. Overview
-This document captures the rationale behind the selection and assignment of power sources for the Magg.e v1 prototype. The robot comprises two onboard compute subsystems (Pi2 + BrickPi3; Pi5 + stereo camera), along with a servo gimbal for head articulation. Reliable, safe, and efficient power delivery was a design priority.
+
+This document captures the rationale behind the selection and assignment of power sources for the MAGG.e™v1 prototype. The robot comprises two onboard compute subsystems (Pi2 + BrickPi3; Pi5 + stereo camera), along with a servo gimbal for head articulation. Reliable, safe, and efficient power delivery was a design priority.
 
 ---
 
@@ -53,7 +54,6 @@ This document captures the rationale behind the selection and assignment of powe
 
 **Design Note:** DC2 (19.5V) is used instead of DC1 to keep the latter available for charging the power bank while the system remains powered.
 
-
 ### Servo Control Channel Plan
 
 - Servo PWM control will be driven from the **Pi5’s GPIO**, using either:
@@ -63,7 +63,6 @@ This document captures the rationale behind the selection and assignment of powe
 - Servo power will be kept electrically **isolated from Pi5’s power rail** to avoid noise or load interference
 
 ---
-
 
 ## 5. Risks and Mitigations
 
@@ -78,6 +77,7 @@ This document captures the rationale behind the selection and assignment of powe
 ---
 
 ## 6. Future Considerations
+
 - Consider building integrated dual-rail power board with telemetry and soft-fused outputs
 - Log power usage over time to inform runtime estimators and future pack sizing
 - Evaluate unified power solution with dual isolated DC-DC converters in a custom enclosure

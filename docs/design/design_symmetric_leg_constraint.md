@@ -1,8 +1,8 @@
-# Symmetric Leg Linkage Constraint Derivation (Magg-E)
+# Symmetric Leg Linkage Constraint Derivation MAGG.e™)
 
 ## Purpose
 
-To design a symmetric planar leg mechanism for Magg-E, we aim to ensure that the left and right leg joints satisfy:
+To design a symmetric planar leg mechanism forMAGG.e™, we aim to ensure that the left and right leg joints satisfy:
 
 ```
 θ₁ = θ₂

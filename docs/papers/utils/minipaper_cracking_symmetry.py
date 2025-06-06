@@ -252,7 +252,7 @@ from matplotlib.animation import FuncAnimation
 import numpy as np
 import matplotlib.pyplot as plt
 
-def animate_leg(theta1_vals, theta2_vals, l, a_x, a_y, b, c):
+def animate_leg(theta1_vals, theta2_vals, leg_length, a_x, a_y, b, c):
     fig, ax = plt.subplots(figsize=(6, 6))
     ax.set_xlim(-0.5, 1.8)
     ax.set_ylim(-1.8, 0.5)
@@ -275,8 +275,8 @@ def animate_leg(theta1_vals, theta2_vals, l, a_x, a_y, b, c):
         if np.isnan(theta2):
             return line_upper, line_lower, line_panto, title  # Still return artists!
 
-        knee = hip + l * np.array([np.cos(theta1), -np.sin(theta1)])
-        foot = knee + l * np.array([-np.cos(-theta2), np.sin(-theta2)])
+        knee = hip + leg_length * np.array([np.cos(theta1), -np.sin(theta1)])
+        foot = knee + leg_length * np.array([-np.cos(-theta2), np.sin(-theta2)])
         connector = knee + c * np.array([np.cos(-theta2), -np.sin(-theta2)])
 
         line_upper.set_data([hip[0], knee[0]], [hip[1], knee[1]])
