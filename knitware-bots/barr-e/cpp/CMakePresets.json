@@ -1,0 +1,26 @@
+{
+  "version": 9,
+  "configurePresets": [
+    {
+      "name": "barr-e-ubuntu-x64-debug",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/usr/bin/gcc",
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_TOOLCHAIN_FILE": "../../../robotick-engine/cmake/toolchain-ubuntu-x64.cmake",
+        "ROBOTICK_PLATFORM_UBUNTU": "ON",
+        "ROBOTICK_ENABLE_PYTHON": "ON",
+        "ROBOTICK_BUILD_TESTS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "barr-e-ubuntu-x64-debug",
+      "configurePreset": "barr-e-ubuntu-x64-debug"
+    }
+  ]
+}
