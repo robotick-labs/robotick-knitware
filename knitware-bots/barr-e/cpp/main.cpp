@@ -17,10 +17,10 @@ void signal_handler()
 void populate_model(robotick::Model& model)
 {
 	auto remote_control = model.add("RemoteControlWorkload", "remote_control", 30.0);
-	auto mqtt_client = model.add("MqttClientWorkload", "mqtt_client", 30.0, {{"broker_url", "mqtt://192.168.5.14"}});
+	// auto mqtt_client = model.add("MqttClientWorkload", "mqtt_client", 30.0, {{"broker_url", "mqtt://192.168.5.14"}});
 	auto console_telem = model.add("ConsoleTelemetryWorkload", "console", 5.0);
 
-	std::vector<robotick::WorkloadHandle> children = {console_telem, remote_control, mqtt_client};
+	std::vector<robotick::WorkloadHandle> children = {console_telem, remote_control}; //, mqtt_client};
 	auto root = model.add("SyncedGroupWorkload", "root_group", children, 30.0);
 	model.set_root(root);
 }
