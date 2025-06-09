@@ -1,0 +1,12 @@
+{
+    "version": 1,
+    "presets": {
+        "esp32s3-workloads-barr-e": {
+            "mode": "include",
+            "workloads": [
+                "BaseXWorkload",
+                "HeartbeatDisplayWorkload"
+            ]
+        }
+    }
+}
