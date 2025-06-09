@@ -1,19 +1,69 @@
 {
-  "version": 9,
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21
+  },
   "configurePresets": [
     {
-      "name": "barr-e-ubuntu-x64-debug",
+      "name": "barr-e-ubuntu-x64-base",
+      "hidden": true,
       "generator": "Ninja",
+      "description": "Base preset for Ubuntu x64 builds (common settings)",
       "binaryDir": "${sourceDir}/build/${presetName}",
       "cacheVariables": {
         "CMAKE_C_COMPILER": "/usr/bin/gcc",
         "CMAKE_CXX_COMPILER": "/usr/bin/g++",
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-        "CMAKE_TOOLCHAIN_FILE": "../../../robotick-engine/cmake/toolchain-ubuntu-x64.cmake",
         "ROBOTICK_PLATFORM_UBUNTU": "ON",
         "ROBOTICK_ENABLE_PYTHON": "ON",
+        "CMAKE_TOOLCHAIN_FILE": "../../../robotick-engine/cmake/toolchain-ubuntu-x64.cmake"
+      }
+    },
+    {
+      "name": "barr-e-ubuntu-x64-debug",
+      "inherits": "barr-e-ubuntu-x64-base",
+      "description": "Debug build (no optimizations, full asserts)",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O0 -fno-omit-frame-pointer -fdebug-prefix-map=${sourceDir}=/workspace -DROBOTICK_DEBUG",
         "ROBOTICK_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "barr-e-ubuntu-x64-development",
+      "inherits": "barr-e-ubuntu-x64-base",
+      "description": "Optimized development build with debug symbols",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O1 -fno-omit-frame-pointer -fdebug-prefix-map=${sourceDir}=/workspace -DROBOTICK_DEV",
+        "ROBOTICK_BUILD_CONFIG_DEVELOPMENT": "ON"
+      }
+    },
+    {
+      "name": "barr-e-ubuntu-x64-release",
+      "inherits": "barr-e-ubuntu-x64-base",
+      "description": "Release build (stripped, optimized)",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS_DEBUG": "-DNDEBUG -DROBOTICK_RELEASE",
+        "ROBOTICK_BUILD_CONFIG_RELEASE": "ON",
+        "ROBOTICK_STRIP_PROBES": "ON"
+      }
+    },
+    {
+      "name": "barr-e-esp32s3-debug",
+      "generator": "Ninja",
+      "description": "ESP32-S3 debug build using Espressif SDK",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ROBOTICK_PLATFORM_ESP32": "ON",
+        "ROBOTICK_BUILD_TESTS": "OFF"
+      },
+      "environment": {
+        "IDF_PATH": "C:/Espressif/frameworks/esp-idf-v5.4.1",
+        "IDF_TOOLS_PATH": "C:/Espressif"
       }
     }
   ],
@@ -21,6 +71,18 @@
     {
       "name": "barr-e-ubuntu-x64-debug",
       "configurePreset": "barr-e-ubuntu-x64-debug"
+    },
+    {
+      "name": "barr-e-ubuntu-x64-development",
+      "configurePreset": "barr-e-ubuntu-x64-development"
+    },
+    {
+      "name": "barr-e-ubuntu-x64-release",
+      "configurePreset": "barr-e-ubuntu-x64-release"
+    },
+    {
+      "name": "barr-e-esp32s3-debug",
+      "configurePreset": "barr-e-esp32s3-debug"
     }
   ]
 }
