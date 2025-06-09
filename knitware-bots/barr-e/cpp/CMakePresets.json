@@ -61,7 +61,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "ROBOTICK_PLATFORM_ESP32": "ON",
         "ROBOTICK_BUILD_TESTS": "OFF",
-        "WORKLOAD_PRESET": "esp32s3-workloads-all"
+        "WORKLOAD_PRESET": "esp32s3-workloads-barr-e"
       },
       "environment": {
         "IDF_PATH": "C:/Espressif/frameworks/esp-idf-v5.4.1",
