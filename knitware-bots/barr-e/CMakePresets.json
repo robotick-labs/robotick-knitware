@@ -6,7 +6,7 @@
   },
   "configurePresets": [
     {
-      "name": "barr-e-ubuntu-x64-base",
+      "name": "barr-e-brain-ubuntu-x64-base",
       "hidden": true,
       "generator": "Ninja",
       "description": "Base preset for Ubuntu x64 builds (common settings)",
@@ -16,13 +16,13 @@
         "CMAKE_CXX_COMPILER": "/usr/bin/g++",
         "ROBOTICK_PLATFORM_UBUNTU": "ON",
         "ROBOTICK_ENABLE_PYTHON": "ON",
-        "CMAKE_TOOLCHAIN_FILE": "../../../robotick-engine/cmake/toolchain-ubuntu-x64.cmake",
-        "WORKLOAD_PRESET": "ubuntu-workloads-all"
+        "CMAKE_TOOLCHAIN_FILE": "../../robotick-engine/cmake/toolchain-ubuntu-x64.cmake",
+        "WORKLOAD_PRESET": "brain-workloads-barr-e"
       }
     },
     {
-      "name": "barr-e-ubuntu-x64-debug",
-      "inherits": "barr-e-ubuntu-x64-base",
+      "name": "barr-e-brain-ubuntu-x64-debug",
+      "inherits": "barr-e-brain-ubuntu-x64-base",
       "description": "Debug build (no optimizations, full asserts)",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Debug",
@@ -32,8 +32,8 @@
       }
     },
     {
-      "name": "barr-e-ubuntu-x64-development",
-      "inherits": "barr-e-ubuntu-x64-base",
+      "name": "barr-e-brain-ubuntu-x64-development",
+      "inherits": "barr-e-brain-ubuntu-x64-base",
       "description": "Optimized development build with debug symbols",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
@@ -42,8 +42,8 @@
       }
     },
     {
-      "name": "barr-e-ubuntu-x64-release",
-      "inherits": "barr-e-ubuntu-x64-base",
+      "name": "barr-e-brain-ubuntu-x64-release",
+      "inherits": "barr-e-brain-ubuntu-x64-base",
       "description": "Release build (stripped, optimized)",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",
@@ -53,7 +53,7 @@
       }
     },
     {
-      "name": "barr-e-esp32s3-debug",
+      "name": "barr-e-body-esp32s3-debug",
       "generator": "Ninja",
       "description": "ESP32-S3 debug build using Espressif SDK",
       "binaryDir": "${sourceDir}/build/${presetName}",
@@ -61,7 +61,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "ROBOTICK_PLATFORM_ESP32": "ON",
         "ROBOTICK_BUILD_TESTS": "OFF",
-        "WORKLOAD_PRESET": "esp32s3-workloads-barr-e"
+        "WORKLOAD_PRESET": "body-workloads-barr-e"
       },
       "environment": {
         "IDF_PATH": "C:/Espressif/frameworks/esp-idf-v5.4.1",
@@ -71,20 +71,20 @@
   ],
   "buildPresets": [
     {
-      "name": "barr-e-ubuntu-x64-debug",
-      "configurePreset": "barr-e-ubuntu-x64-debug"
+      "name": "barr-e-brain-ubuntu-x64-debug",
+      "configurePreset": "barr-e-brain-ubuntu-x64-debug"
     },
     {
-      "name": "barr-e-ubuntu-x64-development",
-      "configurePreset": "barr-e-ubuntu-x64-development"
+      "name": "barr-e-brain-ubuntu-x64-development",
+      "configurePreset": "barr-e-brain-ubuntu-x64-development"
     },
     {
-      "name": "barr-e-ubuntu-x64-release",
-      "configurePreset": "barr-e-ubuntu-x64-release"
+      "name": "barr-e-brain-ubuntu-x64-release",
+      "configurePreset": "barr-e-brain-ubuntu-x64-release"
     },
     {
-      "name": "barr-e-esp32s3-debug",
-      "configurePreset": "barr-e-esp32s3-debug"
+      "name": "barr-e-body-esp32s3-debug",
+      "configurePreset": "barr-e-body-esp32s3-debug"
     }
   ]
 }

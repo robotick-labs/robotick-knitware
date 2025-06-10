@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "/workspace/knitware-bots/barr-e/cpp",
+    "cmake.sourceDirectory": "/workspace/knitware-bots/barr-e",
     "editor.formatOnSave": true,
     "[cpp]": {
         "editor.defaultFormatter": "xaver.clang-format"

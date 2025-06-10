@@ -1,0 +1,6 @@
+{
+    "version": 3,
+    "include": [
+        "knitware-bots/barr-e/CMakePresets.json"
+    ]
+}
