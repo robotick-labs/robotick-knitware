@@ -5,7 +5,7 @@ if(DEFINED ENV{WORKLOAD_PRESET})
     set(WORKLOAD_PRESET $ENV{WORKLOAD_PRESET} CACHE STRING "Workload preset")
 endif()
 
-add_executable(barr-e-brain main.cpp)
+add_executable(barr-e-brain brain_main.cpp)
 
 target_link_libraries(barr-e-brain PRIVATE robotick-engine)
 
