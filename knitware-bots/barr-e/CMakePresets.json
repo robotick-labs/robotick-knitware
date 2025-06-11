@@ -53,7 +53,7 @@
       }
     },
     {
-      "name": "barr-e-body-esp32s3-debug",
+      "name": "barr-e-spine-esp32s3-debug",
       "generator": "Ninja",
       "description": "ESP32-S3 debug build using Espressif SDK",
       "binaryDir": "${sourceDir}/build/${presetName}",
@@ -61,7 +61,7 @@
         "CMAKE_BUILD_TYPE": "Debug",
         "ROBOTICK_PLATFORM_ESP32": "ON",
         "ROBOTICK_BUILD_TESTS": "OFF",
-        "WORKLOAD_PRESET": "body-workloads-barr-e"
+        "WORKLOAD_PRESET": "spine-workloads-barr-e"
       },
       "environment": {
         "IDF_PATH": "C:/Espressif/frameworks/esp-idf-v5.4.1",
@@ -83,8 +83,8 @@
       "configurePreset": "barr-e-brain-ubuntu-x64-release"
     },
     {
-      "name": "barr-e-body-esp32s3-debug",
-      "configurePreset": "barr-e-body-esp32s3-debug"
+      "name": "barr-e-spine-esp32s3-debug",
+      "configurePreset": "barr-e-spine-esp32s3-debug"
     }
   ]
 }

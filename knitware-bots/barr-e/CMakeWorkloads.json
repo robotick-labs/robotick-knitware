@@ -10,7 +10,7 @@
                 "SyncedGroupWorkload"
             ]
         },
-        "body-workloads-barr-e": {
+        "spine-workloads-barr-e": {
             "mode": "include",
             "workloads": [
                 "HeartbeatDisplayWorkload",
