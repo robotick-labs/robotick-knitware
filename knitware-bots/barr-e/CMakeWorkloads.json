@@ -13,7 +13,7 @@
         "spine-workloads-barr-e": {
             "mode": "include",
             "workloads": [
-                "HeartbeatDisplayWorkload",
+                "FaceDisplayWorkload",
                 "SteeringMixerWorkload",
                 "BaseXWorkload",
                 "SequencedGroupWorkload"

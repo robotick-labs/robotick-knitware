@@ -9,12 +9,12 @@ namespace barr_e
     {
         auto steering_mixer = model.add("SteeringMixerWorkload", "steering_mixer");
         auto basex = model.add("BaseXWorkload", "basex");
-        auto heartbeat = model.add("HeartbeatDisplayWorkload", "heartbeat");
+        auto face = model.add("FaceDisplayWorkload", "face");
 
         model.connect("steering_mixer.outputs.left_motor", "basex.inputs.motor3_speed");
         model.connect("steering_mixer.outputs.right_motor", "basex.inputs.motor4_speed");
 
-        std::vector<robotick::WorkloadHandle> esp32_children = {steering_mixer, basex, heartbeat};
+        std::vector<robotick::WorkloadHandle> esp32_children = {steering_mixer, basex, face};
         auto esp32_root = model.add("SequencedGroupWorkload", "esp_control_sequence", esp32_children, 30.0);
 
         model.set_root(esp32_root);
