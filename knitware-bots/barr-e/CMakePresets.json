@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 21
@@ -17,7 +17,8 @@
         "ROBOTICK_PLATFORM_UBUNTU": "ON",
         "ROBOTICK_ENABLE_PYTHON": "ON",
         "CMAKE_TOOLCHAIN_FILE": "../../robotick-engine/cmake/toolchain-ubuntu-x64.cmake",
-        "WORKLOAD_PRESET": "brain-workloads-barr-e"
+        "WORKLOAD_PRESET": "brain-workloads-barr-e",
+        "ROBOTICK_PROJECT_ROOT": "${sourceDir}"
       }
     },
     {
