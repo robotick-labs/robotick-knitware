@@ -48,19 +48,12 @@ void run_engine_on_core1(void* param)
 	robotick::AtomicFlag dummy_flag{false};
 	engine->run(dummy_flag);
 
-	vTaskDelete(nullptr);
+	// vTaskDelete(nullptr);
 }
 
 extern "C" void app_main(void)
 {
 	ESP_LOGI("main_task", "Started on CPU%d", xPortGetCoreID());
-    
-	// Kill Watchdog for this task (your main thread)
-    esp_task_wdt_delete(nullptr);
-
-    // Disable the watchdog for the idle task on Core 1
-    TaskHandle_t idle1 = xTaskGetIdleTaskHandleForCore(1);
-    esp_task_wdt_delete(idle1);
 
 	robotick::ensure_workloads();
 
