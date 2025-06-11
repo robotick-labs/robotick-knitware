@@ -23,34 +23,12 @@ namespace robotick
 	void ensure_workloads()
 	{
 		// ROBOTICK_KEEP_WORKLOAD(ConsoleTelemetryWorkload)
-		// ROBOTICK_KEEP_WORKLOAD(HeartbeatDisplayWorkload)
+		ROBOTICK_KEEP_WORKLOAD(HeartbeatDisplayWorkload)
 		// ROBOTICK_KEEP_WORKLOAD(TimingDiagnosticsWorkload)
 		// ROBOTICK_KEEP_WORKLOAD(SyncedGroupWorkload)
 	}
 
 } // namespace robotick
-
-void create_threaded_model(robotick::Model& model)
-{
-	auto console = model.add("ConsoleTelemetryWorkload", "console", 2.0);
-	auto test_state_1 = model.add("TimingDiagnosticsWorkload", "timing_diag");
-
-	std::vector<robotick::WorkloadHandle> children = {console, test_state_1};
-
-	auto root = model.add("SyncedGroupWorkload", "root", children, 100.0);
-	model.set_root(root);
-}
-
-void create_non_threaded_model(robotick::Model& model)
-{
-	auto console = model.add("ConsoleTelemetryWorkload", "console", 2.0);
-	auto test_state_1 = model.add("TimingDiagnosticsWorkload", "timing_diag");
-
-	std::vector<robotick::WorkloadHandle> children = {console, test_state_1};
-
-	auto root = model.add("SequencedGroupWorkload", "root", children, 100.0);
-	model.set_root(root);
-}
 
 void create_simple_model(robotick::Model& model)
 {
