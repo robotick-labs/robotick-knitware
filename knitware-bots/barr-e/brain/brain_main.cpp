@@ -19,11 +19,19 @@ void signal_handler()
 
 ROBOTICK_ENTRYPOINT
 {
+	// start a local wifi-hotspot (hard-coded creds for now) - needs security pass later:
 	robotick::NetworkHotspotConfig hotspot_config;
-	if(!robotick::NetworkHotspot::start(hotspot_config)); // start a local wifi-hotspot (default creds for now) - needs security pass later
+	barr_e::get_network_hotspot_config(hotspot_config);
+
+	ROBOTICK_INFO("==============================================================\n");
+	ROBOTICK_INFO("BARR.e Brain - setting up wifi hotspot...");
+	const bool hotspot_success = robotick::NetworkHotspot::start(hotspot_config);
+	if(!hotspot_success)
 	{
 		ROBOTICK_FATAL_EXIT("BARR.e Brain - Failed to start wifi-hotspot!");
 	}
+	ROBOTICK_INFO("\n");
+	ROBOTICK_INFO("==============================================================\n");
 
 	robotick::setup_exit_handler(signal_handler);
 
@@ -33,8 +41,6 @@ ROBOTICK_ENTRYPOINT
 	robotick::Engine engine;
 	engine.load(model);
 	engine.run(g_stop_flag);
-
-	robotick::NetworkHotspot::stop(); // stop our local wifi-hotspot
 
 	return 0;
 }

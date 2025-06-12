@@ -1,9 +1,16 @@
 #pragma once
 
 #include "robotick/framework/Model.h"
+#include "robotick/platform/NetworkManager.h"
 
 namespace barr_e
 {
+	static inline void get_network_hotspot_config(robotick::NetworkHotspotConfig& hotspot_config)
+	{
+		hotspot_config.ssid = "BARR.e";
+		hotspot_config.password = "tortoise123";
+		hotspot_config.iface = "wlp88s0f0";
+	}
 
 	static inline void populate_model_spine(robotick::Model& model)
 	{
@@ -32,7 +39,7 @@ namespace barr_e
 
 		// Host Workloads:
 		auto remote_control = model.add("RemoteControlWorkload", "remote_control");
-		auto console_telem = model.add("ConsoleTelemetryWorkload", "console", 5.0);
+		// auto console_telem = model.add("ConsoleTelemetryWorkload", "console", 5.0);
 
 		// Data Connections:
 		// model.connect("remote_control.outputs.left_x", "|spine|steering_mixer.inputs.turn_rate");
@@ -42,7 +49,7 @@ namespace barr_e
 		// model.connect("|spine|basex.outputs.motor4_speed", "console.inputs.motor4_speed");
 
 		// Group everything
-		std::vector<robotick::WorkloadHandle> synced_group = {remote_control, console_telem};
+		std::vector<robotick::WorkloadHandle> synced_group = {remote_control}; //, console_telem};
 		auto root = model.add("SyncedGroupWorkload", "main", synced_group, 30.0);
 
 		model.set_root(root);
