@@ -35,11 +35,11 @@ namespace barr_e
 		auto console_telem = model.add("ConsoleTelemetryWorkload", "console", 5.0);
 
 		// Data Connections:
-		model.connect("remote_control.outputs.left_x", "|spine|steering_mixer.inputs.turn_rate");
-		model.connect("remote_control.outputs.left_y", "|spine|steering_mixer.inputs.speed");
-
-		model.connect("|spine|basex.outputs.motor3_speed", "console.inputs.motor3_speed");
-		model.connect("|spine|basex.outputs.motor4_speed", "console.inputs.motor4_speed");
+		// model.connect("remote_control.outputs.left_x", "|spine|steering_mixer.inputs.turn_rate");
+		// model.connect("remote_control.outputs.left_y", "|spine|steering_mixer.inputs.speed");
+		//
+		// model.connect("|spine|basex.outputs.motor3_speed", "console.inputs.motor3_speed");
+		// model.connect("|spine|basex.outputs.motor4_speed", "console.inputs.motor4_speed");
 
 		// Group everything
 		std::vector<robotick::WorkloadHandle> synced_group = {remote_control, console_telem};

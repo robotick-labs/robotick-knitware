@@ -1,4 +1,4 @@
-# /workspace/knitware-bots/barr-e/spine/CMakeLists.txt
+# /knitware-bots/barr-e/spine/CMakeLists.txt
 
 cmake_minimum_required(VERSION 3.16)
 

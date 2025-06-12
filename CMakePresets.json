@@ -1,7 +1,6 @@
 {
-    "version": 4,
-    "include": [
-        "knitware-bots/barr-e/CMakePresets.json",
-        "robotick-engine/CMakePresets.json"
-    ]
+  "version": 4,
+  "include": [
+    "knitware-bots/barr-e/brain/CMakePresets.json"
+  ]
 }

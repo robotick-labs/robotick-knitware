@@ -1,5 +1,5 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}",
+    "cmake.sourceDirectory": "${workspaceFolder}/knitware-bots/barr-e/brain",
     "editor.formatOnSave": true,
     "[cpp]": {
         "editor.defaultFormatter": "xaver.clang-format"

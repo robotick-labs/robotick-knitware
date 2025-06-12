@@ -51,7 +51,7 @@ void run_engine_on_core1(void* param)
 	// vTaskDelete(nullptr);
 }
 
-extern "C" void app_main(void)
+ROBOTICK_ENTRYPOINT
 {
 	ESP_LOGI("main_task", "Started on CPU%d", xPortGetCoreID());
 
