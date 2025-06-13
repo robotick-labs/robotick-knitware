@@ -6,9 +6,10 @@
 #include "robotick/framework/Engine.h"
 #include "robotick/framework/Model.h"
 #include "robotick/framework/registry/WorkloadRegistry.h"
+#include "robotick/platform/EntryPoint.h"
+#include "robotick/platform/NetworkManager.h"
 #include "robotick/platform/Threading.h"
 
-#include "esp_log.h"
 #include "esp_task_wdt.h"
 
 #include "freertos/FreeRTOS.h"
@@ -34,32 +35,50 @@ namespace robotick
 
 void run_engine_on_core1(void* param)
 {
-	ESP_LOGI(ENGINE_TASK_NAME, "Running on CPU%d", xPortGetCoreID());
+	ROBOTICK_INFO("BARR.e Spine - Running on CPU%d", xPortGetCoreID());
 
 	auto* engine = static_cast<robotick::Engine*>(param);
 
 	robotick::Model model;
 	barr_e::populate_model_spine(model);
 
-	ESP_LOGI("Robotick", "Loading Robotick model...");
+	ROBOTICK_INFO("BARR.e Spine - Loading Robotick model...");
 	engine->load(model); // Ensures memory locality on Core 1
 
-	ESP_LOGI("Robotick", "Starting tick loop...");
+	ROBOTICK_INFO("BARR.e Spine - Starting tick loop...");
 	robotick::AtomicFlag dummy_flag{false};
 	engine->run(dummy_flag);
-
-	// vTaskDelete(nullptr);
 }
 
 ROBOTICK_ENTRYPOINT
 {
-	ESP_LOGI("main_task", "Started on CPU%d", xPortGetCoreID());
+	ROBOTICK_INFO("BARR.e Spine - Started on CPU%d", xPortGetCoreID());
 
 	robotick::ensure_workloads();
 
+	// connect to our local wifi-hotspot (hard-coded creds for now) - needs security pass later:
+	robotick::NetworkHotspotConfig hotspot_config;
+	barr_e::get_network_hotspot_config(hotspot_config);
+
+	robotick::NetworkClientConfig client_config;
+	client_config.type = hotspot_config.type;
+    client_config.iface = "wlan0"; // TBC - may not even be needed on ESP?
+    client_config.ssid = hotspot_config.ssid;
+    client_config.password = hotspot_config.password;
+
+	ROBOTICK_INFO("==============================================================\n");
+	ROBOTICK_INFO("BARR.e Brain - connecting to wifi hotspot...");
+	const bool hotspot_success = robotick::NetworkClient::connect(client_config);
+	if(!hotspot_success)
+	{
+		ROBOTICK_FATAL_EXIT("BARR.e Brain - Failed to connect to wifi-hotspot!");
+	}
+	ROBOTICK_INFO("\n");
+	ROBOTICK_INFO("==============================================================\n");
+
 	static robotick::Engine engine;
 
-	ESP_LOGI("Robotick", "Launching Robotick engine task on core 1...");
+	ROBOTICK_INFO("BARR.e Spine - Launching Robotick engine task on core 1...");
 
 	xTaskCreatePinnedToCore(run_engine_on_core1, ENGINE_TASK_NAME, ENGINE_STACK_SIZE, &engine, ENGINE_TASK_PRIORITY, nullptr, ENGINE_CORE_ID);
 }

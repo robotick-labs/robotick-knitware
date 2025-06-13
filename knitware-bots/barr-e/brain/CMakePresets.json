@@ -18,7 +18,7 @@
         "ROBOTICK_ENABLE_PYTHON": "ON",
         "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/robotick-engine/cmake/toolchain-ubuntu-x64.cmake",
         "WORKLOAD_PRESET": "brain-workloads-barr-e",
-        "ROBOTICK_PROJECT_ROOT": "knitware-bots/barr-e"
+        "ROBOTICK_PROJECT_ROOT": "${sourceDir}/knitware-bots/barr-e"
       }
     },
     {
