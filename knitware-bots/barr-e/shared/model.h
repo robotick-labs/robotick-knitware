@@ -30,26 +30,22 @@ namespace barr_e
 	static inline void populate_model_brain(robotick::Model& model, const robotick::Model& remote_spine_model)
 	{
 		// Register remote model for device
-		model.add_remote_model(remote_spine_model, "spine", "uart:/dev/ttyACM1"
-			/* or: "ip:192.168.1.42"
-			or: "ip:esp32.local"
-			or: "ip:localhost"  // for simulation/testing
-			or: "local"         // force host-local execution */
-		);
+		model.add_remote_model(remote_spine_model, "spine", "ip:10.42.0.60");
+		// or: "uart:/dev/ttyACM1"
+		// or: "ip:esp32.local"
+		// or: "ip:localhost"  // for simulation/testing
+		// or: "local"         // force host-local execution */
 
 		// Host Workloads:
 		auto remote_control = model.add("RemoteControlWorkload", "remote_control");
-		// auto console_telem = model.add("ConsoleTelemetryWorkload", "console", 5.0);
+		auto console_telem = model.add("ConsoleTelemetryWorkload", "console", 5.0);
 
 		// Data Connections:
-		// model.connect("remote_control.outputs.left_x", "|spine|steering_mixer.inputs.turn_rate");
-		// model.connect("remote_control.outputs.left_y", "|spine|steering_mixer.inputs.speed");
-		//
-		// model.connect("|spine|basex.outputs.motor3_speed", "console.inputs.motor3_speed");
-		// model.connect("|spine|basex.outputs.motor4_speed", "console.inputs.motor4_speed");
+		model.connect("remote_control.outputs.left_x", "|spine|steering_mixer.inputs.turn_rate");
+		model.connect("remote_control.outputs.left_y", "|spine|steering_mixer.inputs.speed");
 
 		// Group everything
-		std::vector<robotick::WorkloadHandle> synced_group = {remote_control}; //, console_telem};
+		std::vector<robotick::WorkloadHandle> synced_group = {remote_control, console_telem};
 		auto root = model.add("SyncedGroupWorkload", "main", synced_group, 30.0);
 
 		model.set_root(root);
@@ -57,10 +53,10 @@ namespace barr_e
 
 	static inline void populate_model_common(robotick::Model& model)
 	{
-		robotick::Model spine_model;
-		populate_model_spine(spine_model);
+		robotick::Model remote_spine_model;
+		populate_model_spine(remote_spine_model);
 
-		populate_model_brain(model, spine_model);
+		populate_model_brain(model, remote_spine_model);
 	}
 
 } // namespace barr_e
