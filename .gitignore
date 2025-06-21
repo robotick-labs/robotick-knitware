@@ -2,3 +2,4 @@
 build/
 knitware-bots/esp32-blink
 knitware-bots/tmp_hello_world
+**/build/*

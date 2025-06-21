@@ -1,6 +1,6 @@
 #pragma once
 
-#include "robotick/framework/Model.h"
+#include "robotick/framework/Model0.h"
 #include "robotick/platform/NetworkManager.h"
 
 namespace barr_e
@@ -12,7 +12,7 @@ namespace barr_e
 		hotspot_config.iface = "wlp88s0f0";
 	}
 
-	static inline void populate_model_spine(robotick::Model& model)
+	static inline void populate_model_spine(robotick::Model0& model)
 	{
 		auto steering_mixer = model.add("SteeringMixerWorkload", "steering_mixer");
 		auto basex = model.add("BaseXWorkload", "basex");
@@ -27,7 +27,7 @@ namespace barr_e
 		model.set_root(esp32_root);
 	}
 
-	static inline void populate_model_brain(robotick::Model& model, const robotick::Model& remote_spine_model)
+	static inline void populate_model_brain(robotick::Model0& model, const robotick::Model0& remote_spine_model)
 	{
 		// Register remote model for device
 		model.add_remote_model(remote_spine_model, "spine", "ip:10.42.0.60");
@@ -51,9 +51,9 @@ namespace barr_e
 		model.set_root(root);
 	}
 
-	static inline void populate_model_common(robotick::Model& model)
+	static inline void populate_model_common(robotick::Model0& model)
 	{
-		robotick::Model remote_spine_model;
+		robotick::Model0 remote_spine_model;
 		populate_model_spine(remote_spine_model);
 
 		populate_model_brain(model, remote_spine_model);

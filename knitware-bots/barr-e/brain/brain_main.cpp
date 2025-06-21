@@ -4,7 +4,7 @@
 #include "../shared/model.h"
 
 #include "robotick/framework/Engine.h"
-#include "robotick/framework/Model.h"
+#include "robotick/framework/Model0.h"
 #include "robotick/platform/EntryPoint.h"
 #include "robotick/platform/NetworkManager.h"
 #include "robotick/platform/Signals.h"
@@ -26,7 +26,7 @@ ROBOTICK_ENTRYPOINT
 	ROBOTICK_INFO("==============================================================\n");
 	ROBOTICK_INFO("BARR.e Brain - setting up wifi hotspot...");
 	const bool hotspot_success = robotick::NetworkHotspot::start(hotspot_config);
-	if(!hotspot_success)
+	if (!hotspot_success)
 	{
 		ROBOTICK_FATAL_EXIT("BARR.e Brain - Failed to start wifi-hotspot!");
 	}
@@ -35,7 +35,7 @@ ROBOTICK_ENTRYPOINT
 
 	robotick::setup_exit_handler(signal_handler);
 
-	robotick::Model model;
+	robotick::Model0 model;
 	barr_e::populate_model_common(model);
 
 	robotick::Engine engine;
