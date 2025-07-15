@@ -1,6 +1,6 @@
 #pragma once
 
-#include "robotick/framework/Model0.h"
+#include "robotick/api.h"
 #include "robotick/platform/NetworkManager.h"
 
 namespace barr_e
@@ -12,51 +12,74 @@ namespace barr_e
 		hotspot_config.iface = "wlp88s0f0";
 	}
 
-	static inline void populate_model_spine(robotick::Model0& model)
+	static inline void populate_model_spine(robotick::Model& model)
 	{
-		auto steering_mixer = model.add("SteeringMixerWorkload", "steering_mixer");
-		auto basex = model.add("BaseXWorkload", "basex");
-		auto face = model.add("FaceDisplayWorkload", "face");
+		static const float tick_rate_hz = 25.0f;
 
-		model.connect("steering_mixer.outputs.left_motor", "basex.inputs.motor3_speed");
-		model.connect("steering_mixer.outputs.right_motor", "basex.inputs.motor4_speed");
+		// --- Workloads ---
+		static const robotick::WorkloadSeed steering_mixer{
+			robotick::TypeId("SteeringMixerWorkload"), robotick::StringView("steering_mixer"), tick_rate_hz};
 
-		std::vector<robotick::WorkloadHandle> esp32_children = {steering_mixer, basex, face};
-		auto esp32_root = model.add("SequencedGroupWorkload", "esp_control_sequence", esp32_children, 30.0);
+		static const robotick::WorkloadSeed camera{robotick::TypeId("CameraWorkload"), robotick::StringView("camera"), tick_rate_hz};
 
-		model.set_root(esp32_root);
+		static const robotick::WorkloadSeed basex{robotick::TypeId("BaseXWorkload"), robotick::StringView("basex"), tick_rate_hz};
+
+		static const robotick::WorkloadSeed face{robotick::TypeId("FaceDisplayWorkload"), robotick::StringView("face"), tick_rate_hz};
+
+		static const robotick::WorkloadSeed* group_children[] = {&steering_mixer, &basex, &face};
+
+		static const robotick::WorkloadSeed esp32_root{
+			robotick::TypeId("SequencedGroupWorkload"), robotick::StringView("esp_control_sequence"), tick_rate_hz, group_children};
+
+		static const robotick::WorkloadSeed* all_workloads[] = {&camera, &steering_mixer, &basex, &face, &esp32_root};
+
+		// --- Local Data Connections ---
+		static const robotick::DataConnectionSeed conn_left_motor("steering_mixer.outputs.left_motor", "basex.inputs.motor3_speed");
+		static const robotick::DataConnectionSeed conn_right_motor("steering_mixer.outputs.right_motor", "basex.inputs.motor4_speed");
+
+		static const robotick::DataConnectionSeed* all_connections[] = {&conn_left_motor, &conn_right_motor};
+
+		// --- Remote Engine Connection ---
+		static const robotick::DataConnectionSeed conn_camera("camera.outputs.jpeg_data", "|brain|remote_control.inputs.jpeg_data");
+		static const robotick::DataConnectionSeed* remote_connections[] = {&conn_camera};
+
+		static const robotick::RemoteModelSeed remote_model_brain{
+			robotick::StringView("brain"), robotick::RemoteModelSeed::Mode::IP, "10.42.0.60", remote_connections};
+
+		// --- Finalize model ---
+		model.use_workload_seeds(all_workloads);
+		model.use_data_connection_seeds(all_connections);
+		model.set_root_workload(esp32_root);
 	}
 
-	static inline void populate_model_brain(robotick::Model0& model, const robotick::Model0& remote_spine_model)
+#ifdef ROBOTICK_ENABLE_MODEL_HEAP
+
+	static inline void populate_model_brain(robotick::Model& model)
 	{
+		static const float tick_rate_hz_main = 30.0f;
+		static const float tick_rate_hz_console = 5.0f;
+
 		// Register remote model for device
-		model.add_remote_model(remote_spine_model, "spine", "ip:10.42.0.60");
+		model.add_remote_model("spine", "ip:10.42.0.60")
+			.connect("remote_control.outputs.left.x", "steering_mixer.inputs.turn_rate")
+			.connect("remote_control.outputs.left.y", "steering_mixer.inputs.speed");
+
 		// or: "uart:/dev/ttyACM1"
 		// or: "ip:esp32.local"
 		// or: "ip:localhost"  // for simulation/testing
 		// or: "local"         // force host-local execution */
 
 		// Host Workloads:
-		auto remote_control = model.add("RemoteControlWorkload", "remote_control");
-		auto console_telem = model.add("ConsoleTelemetryWorkload", "console", 5.0);
-
-		// Data Connections:
-		model.connect("remote_control.outputs.left_x", "|spine|steering_mixer.inputs.turn_rate");
-		model.connect("remote_control.outputs.left_y", "|spine|steering_mixer.inputs.speed");
+		static const robotick::WorkloadSeed remote_control = model.add("RemoteControlWorkload", "remote_control").set_tick_rate_hz(tick_rate_hz_main);
+		static const robotick::WorkloadSeed console_telem = model.add("ConsoleTelemetryWorkload", "console").set_tick_rate_hz(tick_rate_hz_console);
 
 		// Group everything
-		std::vector<robotick::WorkloadHandle> synced_group = {remote_control, console_telem};
-		auto root = model.add("SyncedGroupWorkload", "main", synced_group, 30.0);
+		static const robotick::WorkloadSeed root =
+			model.add("SyncedGroupWorkload", "main").set_tick_rate_hz(tick_rate_hz_main).set_children({&remote_control, &console_telem});
 
-		model.set_root(root);
+		model.set_root_workload(root);
 	}
 
-	static inline void populate_model_common(robotick::Model0& model)
-	{
-		robotick::Model0 remote_spine_model;
-		populate_model_spine(remote_spine_model);
-
-		populate_model_brain(model, remote_spine_model);
-	}
+#endif // #ifdef ROBOTICK_ENABLE_MODEL_HEAP
 
 } // namespace barr_e

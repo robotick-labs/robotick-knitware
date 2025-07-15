@@ -4,7 +4,7 @@
 #include "../shared/model.h"
 
 #include "robotick/framework/Engine.h"
-#include "robotick/framework/Model0.h"
+#include "robotick/framework/model/Model.h"
 #include "robotick/platform/EntryPoint.h"
 #include "robotick/platform/NetworkManager.h"
 #include "robotick/platform/Signals.h"
@@ -35,8 +35,8 @@ ROBOTICK_ENTRYPOINT
 
 	robotick::setup_exit_handler(signal_handler);
 
-	robotick::Model0 model;
-	barr_e::populate_model_common(model);
+	robotick::Model model;
+	barr_e::populate_model_brain(model);
 
 	robotick::Engine engine;
 	engine.load(model);
