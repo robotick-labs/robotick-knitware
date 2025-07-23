@@ -22,6 +22,7 @@ static constexpr BaseType_t ENGINE_CORE_ID = 1;
 namespace robotick
 {
 	extern "C" void robotick_force_register_primitives();
+	extern "C" void robotick_force_register_fixed_vector_types();
 
 	void ensure_workloads()
 	{
@@ -32,6 +33,7 @@ namespace robotick
 		ROBOTICK_KEEP_WORKLOAD(SequencedGroupWorkload)
 
 		robotick_force_register_primitives();
+		robotick_force_register_fixed_vector_types();
 	}
 
 } // namespace robotick
