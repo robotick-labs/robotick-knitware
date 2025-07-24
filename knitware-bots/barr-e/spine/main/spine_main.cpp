@@ -29,7 +29,7 @@ namespace robotick
 		ROBOTICK_KEEP_WORKLOAD(CameraWorkload)
 		ROBOTICK_KEEP_WORKLOAD(SteeringMixerWorkload)
 		ROBOTICK_KEEP_WORKLOAD(BaseXWorkload)
-		ROBOTICK_KEEP_WORKLOAD(FaceDisplayWorkload)
+		ROBOTICK_KEEP_WORKLOAD(HeartbeatDisplayWorkload)
 		ROBOTICK_KEEP_WORKLOAD(SequencedGroupWorkload)
 
 		robotick_force_register_primitives();

@@ -24,14 +24,14 @@ namespace barr_e
 
 		static const robotick::WorkloadSeed basex{robotick::TypeId("BaseXWorkload"), robotick::StringView("basex"), tick_rate_hz};
 
-		static const robotick::WorkloadSeed face{robotick::TypeId("FaceDisplayWorkload"), robotick::StringView("face"), tick_rate_hz};
+		static const robotick::WorkloadSeed heart{robotick::TypeId("HeartbeatDisplayWorkload"), robotick::StringView("heart"), tick_rate_hz};
 
-		static const robotick::WorkloadSeed* group_children[] = {&steering_mixer, &basex, &face};
+		static const robotick::WorkloadSeed* group_children[] = {&steering_mixer, &basex, &heart};
 
 		static const robotick::WorkloadSeed esp32_root{
 			robotick::TypeId("SequencedGroupWorkload"), robotick::StringView("esp_control_sequence"), tick_rate_hz, group_children};
 
-		static const robotick::WorkloadSeed* all_workloads[] = {&camera, &steering_mixer, &basex, &face, &esp32_root};
+		static const robotick::WorkloadSeed* all_workloads[] = {&camera, &steering_mixer, &basex, &heart, &esp32_root};
 
 		// --- Local Data Connections ---
 		static const robotick::DataConnectionSeed conn_left_motor("steering_mixer.outputs.left_motor", "basex.inputs.motor3_speed");
@@ -57,7 +57,7 @@ namespace barr_e
 	static inline void populate_model_brain(robotick::Model& model)
 	{
 		static const float tick_rate_hz_main = 30.0f;
-		static const float tick_rate_hz_console = 5.0f;
+		static const float tick_rate_hz_console = 5.0f; //  no real benefit of debug-telemetry being faster than this
 
 		// Register remote model for device
 		model.add_remote_model("spine", "ip:10.42.0.60")
@@ -69,13 +69,19 @@ namespace barr_e
 		// or: "ip:localhost"  // for simulation/testing
 		// or: "local"         // force host-local execution */
 
-		// Host Workloads:
-		static const robotick::WorkloadSeed remote_control = model.add("RemoteControlWorkload", "remote_control").set_tick_rate_hz(tick_rate_hz_main);
-		static const robotick::WorkloadSeed console_telem = model.add("ConsoleTelemetryWorkload", "console").set_tick_rate_hz(tick_rate_hz_console);
+		const robotick::WorkloadSeed& remote_control = model.add("RemoteControlWorkload", "remote_control").set_tick_rate_hz(tick_rate_hz_main);
 
-		// Group everything
-		static const robotick::WorkloadSeed root =
-			model.add("SyncedGroupWorkload", "main").set_tick_rate_hz(tick_rate_hz_main).set_children({&remote_control, &console_telem});
+		const robotick::WorkloadSeed& face = model.add("FaceDisplayWorkload", "face").set_tick_rate_hz(tick_rate_hz_main);
+
+		const robotick::WorkloadSeed& camera = model.add("CameraWorkload", "camera").set_tick_rate_hz(tick_rate_hz_main);
+
+		const robotick::WorkloadSeed& console_telem = model.add("ConsoleTelemetryWorkload", "console").set_tick_rate_hz(tick_rate_hz_console);
+
+		const robotick::WorkloadSeed& root = model.add("SyncedGroupWorkload", "root_group")
+												 .set_children({&console_telem, &remote_control, &face, &camera})
+												 .set_tick_rate_hz(tick_rate_hz_main);
+
+		model.connect("camera.outputs.jpeg_data", "remote_control.inputs.jpeg_data");
 
 		model.set_root_workload(root);
 	}

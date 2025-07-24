@@ -19,7 +19,7 @@
             "mode": "include",
             "workloads": [
                 "CameraWorkload",
-                "FaceDisplayWorkload",
+                "HeartbeatDisplayWorkload",
                 "SteeringMixerWorkload",
                 "BaseXWorkload",
                 "SequencedGroupWorkload"
