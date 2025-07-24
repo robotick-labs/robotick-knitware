@@ -34,8 +34,8 @@ namespace barr_e
 		static const robotick::WorkloadSeed* all_workloads[] = {&camera, &steering_mixer, &basex, &heart, &esp32_root};
 
 		// --- Local Data Connections ---
-		static const robotick::DataConnectionSeed conn_left_motor("steering_mixer.outputs.left_motor", "basex.inputs.motor3_speed");
-		static const robotick::DataConnectionSeed conn_right_motor("steering_mixer.outputs.right_motor", "basex.inputs.motor4_speed");
+		static const robotick::DataConnectionSeed conn_left_motor("steering_mixer.outputs.left_motor", "basex.inputs.motor1_speed");
+		static const robotick::DataConnectionSeed conn_right_motor("steering_mixer.outputs.right_motor", "basex.inputs.motor2_speed");
 
 		static const robotick::DataConnectionSeed* all_connections[] = {&conn_left_motor, &conn_right_motor};
 
