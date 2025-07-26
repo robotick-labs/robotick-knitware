@@ -49,7 +49,7 @@ void run_engine_on_core1(void* param)
 	robotick::Engine engine;
 	engine.load(model); // Ensures memory locality on Core 1
 
-	ROBOTICK_INFO("BARR.e Spine - Starting tick loop...");
+	ROBOTICK_INFO("BARR.e Spine - Running engine...");
 	robotick::AtomicFlag dummy_flag{false};
 	engine.run(dummy_flag);
 }

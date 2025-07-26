@@ -17,9 +17,8 @@ void signal_handler()
 	g_stop_flag.set();
 }
 
-ROBOTICK_ENTRYPOINT
+void start_wifi_hotspot()
 {
-	// start a local wifi-hotspot (hard-coded creds for now) - needs security pass later:
 	robotick::NetworkHotspotConfig hotspot_config;
 	barr_e::get_network_hotspot_config(hotspot_config);
 
@@ -32,6 +31,16 @@ ROBOTICK_ENTRYPOINT
 	}
 	ROBOTICK_INFO("\n");
 	ROBOTICK_INFO("==============================================================\n");
+}
+
+ROBOTICK_ENTRYPOINT
+{
+	// start a local wifi-hotspot (hard-coded creds for now) - needs security pass later:
+	const bool should_start_wifi_hotspot = false;
+	if (should_start_wifi_hotspot)
+	{
+		start_wifi_hotspot();
+	}
 
 	robotick::setup_exit_handler(signal_handler);
 

@@ -4,15 +4,12 @@
         "brain-workloads-barr-e": {
             "mode": "include",
             "workloads": [
-                "RemoteControlWorkload",
-                "ConsoleTelemetryWorkload",
-                "SequencedGroupWorkload",
-                "SyncedGroupWorkload",
                 "CameraWorkload",
+                "ConsoleTelemetryWorkload",
                 "FaceDisplayWorkload",
-                "SteeringMixerWorkload",
-                "BaseXWorkload",
-                "SequencedGroupWorkload"
+                "RemoteControlWorkload",
+                "SequencedGroupWorkload",
+                "SyncedGroupWorkload"
             ]
         },
         "spine-workloads-barr-e": {

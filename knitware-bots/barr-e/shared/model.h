@@ -9,7 +9,7 @@ namespace barr_e
 	{
 		hotspot_config.ssid = "BARR.e";
 		hotspot_config.password = "tortoise123";
-		hotspot_config.iface = "wlp88s0f0";
+		hotspot_config.iface = "wlan1";
 	}
 
 	static inline void populate_model_spine(robotick::Model& model)
