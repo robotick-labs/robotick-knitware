@@ -17,7 +17,7 @@ namespace barr_e
 	static inline void populate_model_spine(robotick::Model& model)
 	{
 		static const float control_tick_rate_hz = 30.0f;
-		static const float ui_tick_rate_hz = 15.0f;
+		static const float ui_tick_rate_hz = 30.0f;
 		static const float root_tick_rate_hz = control_tick_rate_hz;
 
 		// control workloads:
