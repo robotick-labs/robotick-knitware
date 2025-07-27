@@ -9,7 +9,9 @@ namespace barr_e
 	{
 		hotspot_config.ssid = "BARR.e";
 		hotspot_config.password = "tortoise123";
-		hotspot_config.iface = "wlan1";
+		hotspot_config.iface = "wlan0";
+
+		// or run manually: sudo nmcli dev wifi hotspot ifname wlan0 ssid BARR.e password tortoise123
 	}
 
 	static inline void populate_model_spine(robotick::Model& model)
