@@ -19,7 +19,8 @@
                 "HeartbeatDisplayWorkload",
                 "SteeringMixerWorkload",
                 "BaseXWorkload",
-                "SequencedGroupWorkload"
+                "SequencedGroupWorkload",
+                "SyncedGroupWorkload"
             ]
         }
     }

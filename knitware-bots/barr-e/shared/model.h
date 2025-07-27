@@ -14,37 +14,37 @@ namespace barr_e
 
 	static inline void populate_model_spine(robotick::Model& model)
 	{
-		static const float tick_rate_hz = 25.0f;
+		static const float control_tick_rate_hz = 30.0f;
+		static const float ui_tick_rate_hz = 15.0f;
+		static const float root_tick_rate_hz = control_tick_rate_hz;
 
-		// --- Workloads ---
+		// control workloads:
 		static const robotick::WorkloadSeed steering_mixer{
-			robotick::TypeId("SteeringMixerWorkload"), robotick::StringView("steering_mixer"), tick_rate_hz};
+			robotick::TypeId("SteeringMixerWorkload"), robotick::StringView("steering_mixer"), control_tick_rate_hz};
 
-		static const robotick::WorkloadSeed camera{robotick::TypeId("CameraWorkload"), robotick::StringView("camera"), tick_rate_hz};
+		static const robotick::WorkloadSeed basex{robotick::TypeId("BaseXWorkload"), robotick::StringView("basex"), control_tick_rate_hz};
 
-		static const robotick::WorkloadSeed basex{robotick::TypeId("BaseXWorkload"), robotick::StringView("basex"), tick_rate_hz};
+		static const robotick::WorkloadSeed* control_children[] = {&steering_mixer, &basex};
 
-		static const robotick::WorkloadSeed heart{robotick::TypeId("HeartbeatDisplayWorkload"), robotick::StringView("heart"), tick_rate_hz};
+		static const robotick::WorkloadSeed control_group{
+			robotick::TypeId("SequencedGroupWorkload"), robotick::StringView("control_sequence"), control_tick_rate_hz, control_children};
 
-		static const robotick::WorkloadSeed* group_children[] = {&steering_mixer, &basex, &heart};
+		// UI workload(s)
+		static const robotick::WorkloadSeed heart_ui{robotick::TypeId("HeartbeatDisplayWorkload"), robotick::StringView("heart_ui"), ui_tick_rate_hz};
+
+		// root synced-group:
+		static const robotick::WorkloadSeed* synced_children[] = {&control_group, &heart_ui};
 
 		static const robotick::WorkloadSeed esp32_root{
-			robotick::TypeId("SequencedGroupWorkload"), robotick::StringView("esp_control_sequence"), tick_rate_hz, group_children};
+			robotick::TypeId("SyncedGroupWorkload"), robotick::StringView("esp_synced_group"), root_tick_rate_hz, synced_children};
 
-		static const robotick::WorkloadSeed* all_workloads[] = {&camera, &steering_mixer, &basex, &heart, &esp32_root};
+		static const robotick::WorkloadSeed* all_workloads[] = {&steering_mixer, &basex, &heart_ui, &esp32_root, &control_group};
 
 		// --- Local Data Connections ---
 		static const robotick::DataConnectionSeed conn_left_motor("steering_mixer.outputs.left_motor", "basex.inputs.motor1_speed");
 		static const robotick::DataConnectionSeed conn_right_motor("steering_mixer.outputs.right_motor", "basex.inputs.motor2_speed");
 
 		static const robotick::DataConnectionSeed* all_connections[] = {&conn_left_motor, &conn_right_motor};
-
-		// --- Remote Engine Connection ---
-		static const robotick::DataConnectionSeed conn_camera("camera.outputs.jpeg_data", "|brain|remote_control.inputs.jpeg_data");
-		static const robotick::DataConnectionSeed* remote_connections[] = {&conn_camera};
-
-		static const robotick::RemoteModelSeed remote_model_brain{
-			robotick::StringView("brain"), robotick::RemoteModelSeed::Mode::IP, "10.42.0.60", remote_connections};
 
 		// --- Finalize model ---
 		model.use_workload_seeds(all_workloads);
