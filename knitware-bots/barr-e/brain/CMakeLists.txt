@@ -19,6 +19,15 @@ elseif(ROBOTICK_PLATFORM_ESP32)
 endif()
 
 add_executable(barr-e-brain ${CMAKE_CURRENT_SOURCE_DIR}/brain_main.cpp)
+
+# Put executable and other items in the top-level build dir, not a subfolder
+set_target_properties(barr-e-brain PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+
 add_custom_target(default_target ALL DEPENDS barr-e-brain)
 
 target_link_libraries(barr-e-brain PRIVATE robotick-engine)
