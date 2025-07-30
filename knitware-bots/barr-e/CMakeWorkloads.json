@@ -1,0 +1,27 @@
+{
+    "version": 1,
+    "presets": {
+        "brain-workloads-barr-e": {
+            "mode": "include",
+            "workloads": [
+                "CameraWorkload",
+                "ConsoleTelemetryWorkload",
+                "FaceDisplayWorkload",
+                "RemoteControlWorkload",
+                "SequencedGroupWorkload",
+                "SyncedGroupWorkload"
+            ]
+        },
+        "spine-workloads-barr-e": {
+            "mode": "include",
+            "workloads": [
+                "CameraWorkload",
+                "HeartbeatDisplayWorkload",
+                "SteeringMixerWorkload",
+                "BaseXWorkload",
+                "SequencedGroupWorkload",
+                "SyncedGroupWorkload"
+            ]
+        }
+    }
+}

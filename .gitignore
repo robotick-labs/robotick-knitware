@@ -1,1 +1,6 @@
 *.pyc
+build/
+knitware-bots/esp32-blink
+knitware-bots/tmp_hello_world
+**/build/*
+knitware-bots/barr-e/spine/managed_components/

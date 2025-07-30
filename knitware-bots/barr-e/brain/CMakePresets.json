@@ -1,0 +1,91 @@
+{
+  "version": 4,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21
+  },
+  "configurePresets": [
+    {
+      "name": "barr-e-brain-ubuntu-x64-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "description": "Base preset for Ubuntu x64 builds (common settings)",
+      "binaryDir": "${sourceDir}/knitware-bots/barr-e/brain/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "/usr/bin/gcc",
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+        "ROBOTICK_PLATFORM_LINUX": "ON",
+        "ROBOTICK_ENABLE_PYTHON": "ON",
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/robotick-engine/cmake/toolchain-linux-native.cmake",
+        "WORKLOAD_PRESET": "brain-workloads-barr-e",
+        "ROBOTICK_PROJECT_ROOT": "${sourceDir}/knitware-bots/barr-e"
+      }
+    },
+    {
+      "name": "barr-e-brain-ubuntu-x64-debug",
+      "inherits": "barr-e-brain-ubuntu-x64-base",
+      "description": "Debug build (no optimizations, full asserts)",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O0 -fno-omit-frame-pointer -DROBOTICK_DEBUG -DROBOTICK_ENABLE_MODEL_HEAP",
+        "ROBOTICK_BUILD_TESTS": "OFF"
+      }
+    },
+    {
+      "name": "barr-e-brain-ubuntu-x64-development",
+      "inherits": "barr-e-brain-ubuntu-x64-base",
+      "description": "Optimized development build with debug symbols",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_CXX_FLAGS_DEBUG": "-g -O0 -fno-omit-frame-pointer -DROBOTICK_DEV -DROBOTICK_ENABLE_MODEL_HEAP",
+        "ROBOTICK_BUILD_CONFIG_DEVELOPMENT": "ON"
+      }
+    },
+    {
+      "name": "barr-e-brain-ubuntu-x64-release",
+      "inherits": "barr-e-brain-ubuntu-x64-base",
+      "description": "Release build (stripped, optimized)",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_FLAGS_DEBUG": "-DNDEBUG -DROBOTICK_RELEASE -DROBOTICK_ENABLE_MODEL_HEAP",
+        "ROBOTICK_BUILD_CONFIG_RELEASE": "ON",
+        "ROBOTICK_STRIP_PROBES": "ON"
+      }
+    },
+    {
+      "name": "barr-e-spine-esp32s3-debug",
+      "generator": "Ninja",
+      "description": "ESP32-S3 debug build using Espressif SDK",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "ROBOTICK_PLATFORM_ESP32": "ON",
+        "ROBOTICK_BUILD_TESTS": "OFF",
+        "WORKLOAD_PRESET": "spine-workloads-barr-e"
+      },
+      "environment": {
+        "IDF_PATH": "C:/Espressif/frameworks/esp-idf-v5.4.1",
+        "IDF_TOOLS_PATH": "C:/Espressif"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "barr-e-brain-ubuntu-x64-debug",
+      "configurePreset": "barr-e-brain-ubuntu-x64-debug"
+    },
+    {
+      "name": "barr-e-brain-ubuntu-x64-development",
+      "configurePreset": "barr-e-brain-ubuntu-x64-development"
+    },
+    {
+      "name": "barr-e-brain-ubuntu-x64-release",
+      "configurePreset": "barr-e-brain-ubuntu-x64-release"
+    },
+    {
+      "name": "barr-e-spine-esp32s3-debug",
+      "configurePreset": "barr-e-spine-esp32s3-debug"
+    }
+  ]
+}
