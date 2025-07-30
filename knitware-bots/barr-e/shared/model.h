@@ -35,10 +35,10 @@ namespace barr_e
 		static const robotick::WorkloadSeed heart_ui{robotick::TypeId("HeartbeatDisplayWorkload"), robotick::StringView("heart_ui"), ui_tick_rate_hz};
 
 		// root synced-group:
-		static const robotick::WorkloadSeed* synced_children[] = {&control_group, &heart_ui};
+		static const robotick::WorkloadSeed* root_children[] = {&control_group, &heart_ui};
 
 		static const robotick::WorkloadSeed esp32_root{
-			robotick::TypeId("SyncedGroupWorkload"), robotick::StringView("esp_synced_group"), root_tick_rate_hz, synced_children};
+			robotick::TypeId("SequencedGroupWorkload"), robotick::StringView("esp32_root"), root_tick_rate_hz, root_children};
 
 		static const robotick::WorkloadSeed* all_workloads[] = {&steering_mixer, &basex, &heart_ui, &esp32_root, &control_group};
 
