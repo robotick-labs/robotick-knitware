@@ -9,6 +9,7 @@
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Build: barr-e-brain",
             "environment": [
                 {
                     "name": "LD_LIBRARY_PATH",

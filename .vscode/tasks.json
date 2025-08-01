@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build: barr-e-brain",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--build",
+        "${workspaceFolder}/knitware-bots/barr-e/brain/build/barr-e-brain-ubuntu-x64-debug",
+        "--target",
+        "barr-e-brain"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/knitware-bots/barr-e/brain"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "detail": "Build task for barr-e-brain (ubuntu-x64-debug preset)"
+    }
+  ]
+}
